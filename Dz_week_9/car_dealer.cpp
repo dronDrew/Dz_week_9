@@ -43,42 +43,80 @@ void Functor_add::operator()(std::vector<car>&a) {
 }
 void Functor_sort_by_name::operator()(std::vector<car>& a) {
 
-	std::sort(a.begin(),a.end(),Car_name_sort());
+	std::sort(a.begin(), a.end(), [&](const car&g,const car&b) {
+		return g.name_car > b.name_car;
+		});
 }
 void Functor_sort_by_year::operator()(std::vector<car>& a) {
-	//int year;
-	//std::sort(a.begin(), a.end(),year);
+	std::sort(a.begin(), a.end(), [&](const car& g, const car& b) {
+		return g.year_of_car > b.year_of_car;
+		});
 }
 void Functor_sort_by_volume::operator()(std::vector<car>& a) {
-	//std::sort(a.begin(), a.end());
+	std::sort(a.begin(), a.end(), [&](const car& g, const car& b) {
+		return g.volume_engine > b.volume_engine;
+		});
 }
 void Functor_sort_by_price::operator()(std::vector<car>& a){
-	//std::sort(a.begin(), a.end());
+	std::sort(a.begin(), a.end(), [&](const car& g, const car& b) {
+		return g.price > b.price;
+		}
+		);
 }
 void Functor_search_by_name::operator()(std::vector<car>& a) {
-	//std::string name;
-	//std::find_if(a.begin(), a.end(),name);
+	std::string key_name;
+	std::cout << "Enter name of car for Serching\n";
+	std::cin >> key_name;
+	auto res=std::find_if(a.begin(), a.end(), [&key_name](const car& b) {
+		return key_name == b.name_car;
+		}
+		);
+	res->Print_info();
 }
 void Functor_search_by_year::operator()(std::vector<car>& a) {
-	//std::find_if(a.begin(), a.end());
+	int key_year;
+	std::cout << "Enter year of car for Serching\n";
+	std::cin >> key_year;
+	auto res = std::find_if(a.begin(), a.end(), [&key_year](const car& b) {
+		return key_year == b.year_of_car;
+		}
+	);
+	res->Print_info();
 }
 void Functor_search_by_volume::operator()(std::vector<car>& a) {
-	//std::find_if(a.begin(), a.end());
+	double key_volume;
+	std::cout << "Enter year of car for Serching\n";
+	std::cin >> key_volume;
+	auto res = std::find_if(a.begin(), a.end(), [&key_volume](const car& b) {
+		return key_volume == b.volume_engine;
+		}
+	);
+	res->Print_info();
 }
 void  Functor_search_by_price::operator()(std::vector<car>& a) {
-	//std::find_if(a.begin(), a.end());
+	float key_price;
+	std::cout << "Enter year of car for Serching\n";
+	std::cin >> key_price;
+	auto res = std::find_if(a.begin(), a.end(), [&key_price](const car& b) {
+		return key_price == b.price;
+		}
+	);
+	res->Print_info();
 }
 
 //
 void car_dealer::Menu() {
 	int choice{ 0 };
-	while (true)
+	bool run{ true };
+	while (run)
 	{
+		system("CLS");
 		std::cout << "Press 1 to add car\n";
 		std::cout << "Press 2 to print all saled cars\n";
 		std::cout << "Press 3 to clear database\n";
 		std::cout << "Press 4 to sort cars\n";
 		std::cout << "Press 5 to search\n";
+		std::cout << "Press 6 to exit\n";
 		std::cin >> choice;
 		switch (choice)
 		{
@@ -90,6 +128,7 @@ void car_dealer::Menu() {
 		case 2:
 			Functor_print print;
 			print(this->solded_car);
+			Sleep(3000);
 			system("CLS");
 			break;
 		case 3:
@@ -98,6 +137,7 @@ void car_dealer::Menu() {
 			system("CLS");
 			break;
 		case 4:
+			system("CLS");
 			std::cout << "Press 1 to sort by name\n";
 			std::cout << "Press 2 to sort by year\n";
 			std::cout << "Press 3 to sirt by engine volume\n";
@@ -124,6 +164,7 @@ void car_dealer::Menu() {
 			}
 			break;
 		case 5:
+			system("CLS");
 			std::cout << "Press 1 to search by name\n";
 			std::cout << "Press 2 to search by year\n";
 			std::cout << "Press 3 to search by engine volume\n";
@@ -134,22 +175,31 @@ void car_dealer::Menu() {
 			case 1:
 				Functor_search_by_name na;
 				na(this->solded_car);
+				Sleep(3000);
 				break;
 			case 2:
 				Functor_search_by_year ye;
 				ye(this->solded_car);
+				Sleep(3000);
 				break;
 			case 3:
 				Functor_search_by_volume vol;
 				vol(this->solded_car);
+				Sleep(3000);
 				break;
 			case 4:
 				Functor_search_by_price pri;
 				pri(this->solded_car);
+				Sleep(3000);
 				break;
 			}
 			break;
-			
+		case 6:
+			system("CLS");
+			std::cout << "Bye\n";
+			run = false;
+			break;
+
 		}
 
 	}
